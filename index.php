@@ -1,5 +1,3 @@
-DOES THIS WORK AUTOMATICALLY???
-
 <!doctype html>
 <html lang="en">
   <head>
