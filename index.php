@@ -1,57 +1,6 @@
 <!doctype html>
 <html lang="en">
   <head>
-	<style>
-	body {
-	  font-family: "Lato", sans-serif;
-	}
-
-	.sidepanel  {
-	  width: 0;
-	  position: fixed;
-	  z-index: 1;
-	  height: 350px;
-	  top: 50;
-	  left: 30;
-	  background-color: #111;
-	  overflow-x: hidden;
-	  transition: 0.5s;
-	  padding-top: 60px;
-	}
-
-	.sidepanel a {
-	  padding: 8px 8px 8px 32px;
-	  text-decoration: none;
-	  font-size: 25px;
-	  color: #818181;
-	  display: block;
-	  transition: 0.3s;
-	}
-
-	.sidepanel a:hover {
-	  color: #f1f1f1;
-	}
-
-	.sidepanel .closebtn {
-	  position: absolute;
-	  top: 0;
-	  right: 25px;
-	  font-size: 36px;
-	}
-
-	.openbtn {
-	  font-size: 20px;
-	  cursor: pointer;
-	  background-color: #111;
-	  color: white;
-	  padding: 10px 15px;
-	  border: none;
-	}
-
-	.openbtn:hover {
-	  background-color:#444;
-	}
-	</style>  	
 
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -151,7 +100,7 @@
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-	        <a href="Manufact.php" class="btn btn-secondary btn-lg" tabindex="-1" role="button" aria-disabled="true">Login</a>
+	        <a href="manufact.php" class="btn btn-secondary btn-lg" tabindex="-1" role="button" aria-disabled="true">Login</a>
 	      </div>
 	    </div>
 	  </div>
