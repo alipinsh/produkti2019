@@ -16,7 +16,7 @@ import java.sql.Statement;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String url = "jdbc:mysql://den1.mysql2.gear.host:3306";
+    private static final String url = "jdbc:mysql://den1.mysql2.gear.host:3306/productsrvt";
     private static final String user = "productsrvt";
     private static final String pass = "admin123_";
     Button btnFetch,btnClear;
@@ -33,10 +33,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-// TODO Auto-generated method stub
                 ConnectMySql connectMySql = new ConnectMySql();
                 connectMySql.execute("");
-                connectMySql.ch;
             }
         });
         btnClear.setOnClickListener(new View.OnClickListener() {
@@ -54,8 +52,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            Toast.makeText(MainActivity.this, "Please wait...", Toast.LENGTH_SHORT)
-                    .show();
+            Toast.makeText(MainActivity.this, "Please wait...", Toast.LENGTH_SHORT).show();
 
         }
 
@@ -68,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
                 String result = "Database Connection Successful\n";
                 Statement st = con.createStatement();
-                ResultSet rs = st.executeQuery("select distinct nosaukums from prece");
+                ResultSet rs = st.executeQuery("select distinct name from client");
                 ResultSetMetaData rsmd = rs.getMetaData();
 
                 while (rs.next()) {
