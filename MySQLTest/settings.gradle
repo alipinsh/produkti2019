@@ -1,2 +1,0 @@
-include ':app', ':mysql-connector-java-5.1.48'
-rootProject.name='MySQLTest'
