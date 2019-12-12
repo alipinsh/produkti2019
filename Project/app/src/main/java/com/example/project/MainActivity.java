@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean isRightCode = false;
 
     private Button button;
-    EditText editText;
+    private EditText editText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         button = findViewById(R.id.button);
+        editText = findViewById(R.id.editText);
 
         button.setOnClickListener(new View.OnClickListener() {
 
@@ -62,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
                 Statement st = con.createStatement();
                 ResultSet rs = st.executeQuery("SELECT manufacturer, code FROM packer;");
                 ResultSetMetaData rsmd = rs.getMetaData();
-                editText = findViewById(R.id.editText);
+
 
                 while (rs.next()) {
                     result = rs.getString("code");
@@ -92,5 +93,5 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = new Intent(this, MenuActivity.class);
         startActivity(intent);
-}
+    }
 }

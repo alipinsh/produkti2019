@@ -22,6 +22,8 @@ import java.util.Arrays;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import java.util.HashMap;
 import java.util.List;
 
 public class OrderListActivity extends ListActivity {
@@ -29,12 +31,16 @@ public class OrderListActivity extends ListActivity {
     private static final String t = "[LIST]";
 
     private ArrayAdapter<String> resultAdapter;
-    private ArrayList<String> result_list;
+    private ArrayList<String> displayList;
+    //private HashMap<String, Order> listItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_view);
+
+        //listItems = new HashMap<String, Order>();
+        displayList = new ArrayList<String>();
 
         ConnectMySql connectMySql = new ConnectMySql();
         connectMySql.execute("");
@@ -44,8 +50,19 @@ public class OrderListActivity extends ListActivity {
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-        Toast.makeText(getApplicationContext(), "You chose order nr " + l.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(), "You chose order nr " + l.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
+        int orderId = Integer.parseInt(l.getItemAtPosition(position).toString().replaceAll("\\D+", ""));
+        boolean orderStatus = !(l.getItemAtPosition(position).toString().contains("not"));
+        openOrder(orderId, orderStatus);
     }
+
+    public void openOrder(int orderId, boolean orderStatus){
+        Intent intent2 = new Intent(this, OrderActivity.class);
+        intent2.putExtra("ORDER_ID", orderId);
+        intent2.putExtra("ORDER_STATUS", orderStatus);
+        startActivity(intent2);
+    }
+
 
     protected class ConnectMySql extends AsyncTask<String, Void, String> {
         String res = "";
@@ -54,7 +71,6 @@ public class OrderListActivity extends ListActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Toast.makeText(OrderListActivity.this, "Please wait...", Toast.LENGTH_SHORT).show();
-
         }
 
         @Override
@@ -73,19 +89,32 @@ public class OrderListActivity extends ListActivity {
                         "WHERE product.manufacturer=" + Manufacturer.id + " AND package.sent = true;");
                 ResultSetMetaData rsmd = rs.getMetaData();
 
-                result_list = new ArrayList<String>();
+
                 while (rs.next()) {
-                    String id = rs.getString("id");
+                    /*
+                    Order order = new Order();
+                    order.setId(rs.getInt("id"));
+                    order.setStatus(rs.getBoolean("status"));
+
+                    String status;
+                    if (order.getStatus()) {
+                        status = "(completed)";
+                    } else {
+                        status = "(not completed)";
+                    }
+                    listItems.put(order.getId() + " " + status, order);
+                    */
+
                     String status;
                     if (rs.getBoolean("status")) {
                         status = "(completed)";
                     } else {
                         status = "(not completed)";
                     }
-                    result_list.add(id + " " + status);
+                    displayList.add(rs.getString("id") + " " + status);
                 }
 
-                Log.i(t, result_list.toString());
+                Log.i(t, displayList.toString());
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -97,7 +126,11 @@ public class OrderListActivity extends ListActivity {
 
         @Override
         protected void onPostExecute(String result) {
-            resultAdapter = new ArrayAdapter<String>(OrderListActivity.this, android.R.layout.simple_list_item_1, result_list);
+            //displayList.addAll(listItems.keySet());
+            resultAdapter = new ArrayAdapter<String>(OrderListActivity.this,
+                    android.R.layout.simple_list_item_1,
+                    displayList
+            );
             setListAdapter(resultAdapter);
         }
     }

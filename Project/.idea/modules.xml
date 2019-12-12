@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/mysql-connector-java-5.1.48/mysql-connector-java-5.1.48.iml" filepath="$PROJECT_DIR$/mysql-connector-java-5.1.48/mysql-connector-java-5.1.48.iml" />
       <module fileurl="file://$PROJECT_DIR$/mysql-connector-java-8.0.18/mysql-connector-java-8.0.18.iml" filepath="$PROJECT_DIR$/mysql-connector-java-8.0.18/mysql-connector-java-8.0.18.iml" />
+      <module fileurl="file://$PROJECT_DIR$/openCVLibrary347/openCVLibrary347.iml" filepath="$PROJECT_DIR$/openCVLibrary347/openCVLibrary347.iml" />
     </modules>
   </component>
 </project>

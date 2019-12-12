@@ -28,17 +28,18 @@ public class MenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View b) {
                 switch (b.getId()) {
-
                 case R.id.button2:
-                openList();
-                break;
-                    default:
-                        break;
+                    openList();
+                    break;
+                default:
+                    break;
                 }
+            }
+        });
     }
 
-}); }
     public void openList(){
         Intent intent = new Intent(this, OrderListActivity.class);
         startActivity(intent);
-}}
+    }
+}
