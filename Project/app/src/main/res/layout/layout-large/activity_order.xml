@@ -11,6 +11,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginLeft="15dp"
         android:text="Order number"
+        android:textSize="28"
         android:textColor="#000"/>
 
     <Switch
@@ -18,24 +19,27 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_marginLeft="200dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginLeft="140dp"
+        android:layout_marginRight="60dp"
+        android:textSize="20"
         android:text="Show scanned product" />
 
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
-        android:layout_height="393dp"
+        android:layout_height="553dp"
         android:layout_marginTop="30dp"
         android:divider="#ECECEC"
+        android:textSize="20dp"
         android:dividerHeight="1sp" />
 
     <Button
         android:id="@+id/scanbutton"
-        android:layout_width="174dp"
+        android:layout_width="184dp"
+        android:textSize="27"
         android:layout_height="52dp"
-        android:layout_marginLeft="120dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginLeft="145dp"
+        android:layout_marginTop="35dp"
         android:text="Scan"
         android:visibility="visible" />
 

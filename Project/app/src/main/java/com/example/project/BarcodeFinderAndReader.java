@@ -58,6 +58,8 @@ public class BarcodeFinderAndReader {
     private Result result;
     private ResultPoint[] resultPoints;
 
+    private String foundString;
+
     BarcodeFinderAndReader() {
         mLargestContour = new MatOfPoint();
         depth = CvType.CV_32F;
@@ -70,7 +72,7 @@ public class BarcodeFinderAndReader {
         lineColor = new Scalar(0, 255, 0);
     }
 
-    public void read (Mat image) {
+    public String read (Mat image) {
         bmap = Bitmap.createBitmap(image.width(), image.height(), Bitmap.Config.ARGB_8888);
         Utils.matToBitmap(image, bmap);
         intArray = new int[bmap.getWidth() * bmap.getHeight()];
@@ -79,19 +81,21 @@ public class BarcodeFinderAndReader {
         bitmap = new BinaryBitmap(new HybridBinarizer(source));
         try {
             result = reader.decode(bitmap);
-            Log.i(TAG, result.toString());
+            foundString = result.toString();
             resultPoints = result.getResultPoints();
             for (int i = 0; i < resultPoints.length - 1; i++) {
                 Imgproc.line(image, resultToPoint(resultPoints[i]), resultToPoint(resultPoints[i + 1]), lineColor, 5);
             }
+            return foundString;
         } catch (NotFoundException e ) {
-            //Log.i(TAG, "Not found exception");
+            Log.i(TAG, "Not found exception");
         } catch (FormatException e) {
             Log.i(TAG, "Format exception");
         } catch (ChecksumException e) {
             Log.i(TAG, "Checksum exception");
         }
 
+        return "";
     }
 
     public void findOld(Mat image) {

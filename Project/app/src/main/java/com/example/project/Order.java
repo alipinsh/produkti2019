@@ -8,7 +8,7 @@ public class Order {
     private ArrayList<Product> products;
 
     public Order() {
-
+        products = new ArrayList<Product>();
     }
 
     public Order(int id, boolean status, ArrayList<Product> products) {
@@ -42,6 +42,7 @@ public class Order {
     }
 
     public void addProduct(Product p) {
+        //products.add(new Product(p.getId(), p.getName(), p.getQuantity(), p.getProdcode(), p.getScanned()));
         products.add(p);
     }
 

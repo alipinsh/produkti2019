@@ -137,5 +137,9 @@
     <orderEntry type="library" name="Gradle: androidx.constraintlayout:constraintlayout:1.1.3@aar" level="project" />
     <orderEntry type="module" module-name="openCVLibrary347" />
     <orderEntry type="module" module-name="mysql-connector-java-5.1.48" />
+    <orderEntry type="module" module-name="openCVLibrary347" />
+    <orderEntry type="module" module-name="mysql-connector-java-5.1.48" />
+    <orderEntry type="module" module-name="openCVLibrary347" />
+    <orderEntry type="module" module-name="mysql-connector-java-5.1.48" />
   </component>
 </module>

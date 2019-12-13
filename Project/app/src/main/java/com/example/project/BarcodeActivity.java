@@ -16,6 +16,7 @@ import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2;
 import org.opencv.imgproc.Imgproc;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -24,8 +25,11 @@ import android.view.SurfaceView;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import java.util.HashMap;
+import java.util.TreeSet;
+
 public class BarcodeActivity extends Activity implements CvCameraViewListener2 {
-    private static final String TAG = "OCVSample::Activity";
+    private static final String t = "[CAMERA]";
 
     private CameraBridgeViewBase mOpenCvCameraView;
     private boolean mIsJavaCamera = true;
@@ -33,13 +37,18 @@ public class BarcodeActivity extends Activity implements CvCameraViewListener2 {
     private Mat mFrame;
     private BarcodeFinderAndReader mReader;
 
+    private HashMap<String, Boolean> prodcodes;
+    private String foundString;
+    private Boolean value;
+    private TreeSet<String> stringSet;
+
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
         public void onManagerConnected(int status) {
             switch (status) {
                 case LoaderCallbackInterface.SUCCESS:
                 {
-                    Log.i(TAG, "OpenCV loaded successfully");
+                    Log.i(t, "OpenCV loaded successfully");
                     mOpenCvCameraView.enableView();
                 } break;
                 default:
@@ -51,14 +60,15 @@ public class BarcodeActivity extends Activity implements CvCameraViewListener2 {
     };
 
     public BarcodeActivity() {
-        Log.i(TAG, "Instantiated new " + this.getClass());
+        Log.i(t, "Instantiated new " + this.getClass());
     }
 
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        Log.i(TAG, "called onCreate");
+        Log.i(t, "called onCreate");
         super.onCreate(savedInstanceState);
+
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         setContentView(R.layout.camera_layout);
@@ -68,6 +78,10 @@ public class BarcodeActivity extends Activity implements CvCameraViewListener2 {
         mOpenCvCameraView.setVisibility(SurfaceView.VISIBLE);
 
         mOpenCvCameraView.setCvCameraViewListener(this);
+
+        prodcodes = (HashMap<String, Boolean>) getIntent().getSerializableExtra("PRODCODES");
+        Log.i(t, prodcodes.toString());
+        stringSet = new TreeSet<String>();
     }
 
     @Override
@@ -83,10 +97,10 @@ public class BarcodeActivity extends Activity implements CvCameraViewListener2 {
     {
         super.onResume();
         if (!OpenCVLoader.initDebug()) {
-            Log.d(TAG, "Internal OpenCV library not found. Using OpenCV Manager for initialization");
+            Log.d(t, "Internal OpenCV library not found. Using OpenCV Manager for initialization");
             OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, mLoaderCallback);
         } else {
-            Log.d(TAG, "OpenCV library found inside package. Using it!");
+            Log.d(t, "OpenCV library found inside package. Using it!");
             mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
         }
     }
@@ -95,6 +109,7 @@ public class BarcodeActivity extends Activity implements CvCameraViewListener2 {
         super.onDestroy();
         if (mOpenCvCameraView != null)
             mOpenCvCameraView.disableView();
+
     }
 
     public void onCameraViewStarted(int width, int height) {
@@ -107,8 +122,32 @@ public class BarcodeActivity extends Activity implements CvCameraViewListener2 {
 
     public Mat onCameraFrame(CvCameraViewFrame inputFrame) {
         mFrame = inputFrame.rgba();
-        mReader.read(mFrame);
+        Core.rotate(mFrame, mFrame, Core.ROTATE_90_CLOCKWISE);
+        foundString = mReader.read(mFrame);
+        Log.i(t, foundString);
+
+        if (foundString != "") {
+            stringSet.add(foundString);
+        }
 
         return mFrame;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Log.i(t, "Pressed back");
+
+        for (String s : stringSet) {
+            if (prodcodes.containsKey(s)) {
+                prodcodes.put(s, true);
+            }
+        }
+
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra("CAMERA_RESULT", prodcodes);
+        setResult(RESULT_OK, resultIntent);
+        finish();
+
+
     }
 }
