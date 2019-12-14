@@ -86,6 +86,9 @@ public class MainActivity extends AppCompatActivity {
             if (isRightCode) {
                 openMenu();
             }
+            else{
+                Toast.makeText(MainActivity.this, "Wrong code!", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
