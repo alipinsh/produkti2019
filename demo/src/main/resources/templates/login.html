@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Login</title>
+		<meta charset="utf-8"> 
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" th:href="@{/public/css/style.css}"></link>
+		<script th:src="@{/public/js/script.js}"></script>
+	</head>
+	<body>
+		<p th:if="${loginError}" class="error">Wrong email or password!</p> 
+		<form id="loginForm">
+			<fieldset>
+			<legend>Login</legend>
+				Email<input type="text" name="email"><br>
+				Password<input type="password" name="password"><br>
+				Type<br>
+				<input type="radio" name="type" value="c" checked> Client<br>
+				<input type="radio" name="type" value="m"> Manufacturer<br>
+				<input type="button" value="Login" onclick="login()">
+			</fieldset>
+		</form>
+	</body>
+</html>

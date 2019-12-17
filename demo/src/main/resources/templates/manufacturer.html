@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Manufacturer</title>
+	<link rel="stylesheet" th:href="@{/public/css/style.css}"></link>
+	<script th:src="@{/public/js/script.js}"></script>
+</head>
+<body>
+	<div id="header">
+		<h1>ProductsRVT</h1>
+		<ul>
+		<li th:if="${isclient}"><a href="/client">My page (Client)</a></li>
+		<li th:unless="${isclient}"><a href="/manufacturer">My page (Manufacturer)</a></li>
+		<li><a href="/products">Products</a></li>
+		<li><a href="/manufacturers">Manufacturers</a></li>
+		<li><a href="/logout">Logout</a></li>
+		</ul>
+		<hr />
+	</div>
+	
+	<div id="info">
+		<h1 th:attr="data-manid=${id}" th:text="${name}"></h1>
+		<ul>
+		<li th:text="${description}"></li>
+		<li th:text="${address}"></li>
+		<li th:text="${email}"></li>
+		<li th:if="${ismine}" th:text="${code}"></li>
+		</ul>
+	</div>
+
+	<table id="table">
+		<tr th:each="product: ${products}" th:attr="id=${product.id}">
+			<td th:href="@{/product/{pid}(pid=${product.id})}" th:text="${product.id}"></td>
+			<td th:text="${product.name}" />
+			<td th:text="${product.description}" />
+			<td th:text="${#numbers.formatDecimal(product.price, 1, 'COMMA', 2, 'POINT')}" />
+			<td th:text="${product.prodcode}" />
+			<td th:if="${ismine}">
+				<button type="button" th:onclick="'showEditForm(' + ${product.id} + ');'">Edit</button>
+				<button type="button" th:onclick="'deleteProduct(' + ${product.id} + ');'">Delete</button>
+			</td>
+			<td th:unless="${ismine}">
+				<button th:if="${isclient}" type="button" th:onclick="'addToPackage(' + ${product.id} + ');'">Add to package</button>
+			</td>
+		</tr>
+	</table>
+	
+	<div th:if="${ismine}">
+	<form name="editProductForm" id="editForm" style="display: none">
+		<fieldset>
+		<legend>Edit product</legend>
+			ID<input type="text" name="id" disabled>
+			Name<input type="text" name="name"><br />
+			Description<textarea name="description" rows="5" cols="30"></textarea><br />
+			Price<input type="number" name="price" min="0"><br />
+			Prodcode<input type="text" name="prodcode"><br />
+			<input type="button" value="Edit product" onclick="editProduct()">
+			<input type="button" value="Cancel editing" onclick="hideEditForm()">
+		</fieldset>
+	</form>
+	
+	<form name="addProductForm">
+		<fieldset>
+		<legend>Add product</legend>
+			Name<input type="text" name="name" required><br />
+			Description<textarea name="description" rows="5" cols="30"></textarea><br />
+			Price<input type="number" name="price" min="0" required><br />
+			Prodcode<input type="text" name="prodcode" required><br />
+			<input type="button" value="Add product" onclick="addProduct()">
+		</fieldset>
+	</form>
+	<div id="info">
+		<ul>
+		<li>No empty fields</li>
+		</ul>
+	</div>
+	</div>
+</body>
+</html>

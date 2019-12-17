@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Register</title>
+		<meta charset="utf-8"> 
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" th:href="@{/public/css/style.css}"></link>
+		<script th:src="@{/public/js/script.js}"></script>
+	</head>
+	<body>
+		<form id="clientForm" action="/client" method="post">
+			<fieldset>
+			<legend>Client form</legend>
+				Name<input type="text" name="name"><br>
+				Surname<input type="text" name="surname"><br>
+				Address<input type="text" name="address"><br>
+				Email<input type="text" name="email"><br>
+				Password<input type="password" name="password"><br>
+				<input type="button" value="Register" onclick="registerClient()">
+			</fieldset>
+		</form>
+		<form id="manufacturerForm" action="/manufacturer" method="post">
+			<fieldset>
+			<legend>Manufacturer form</legend>
+				Name<input type="text" name="name"><br>
+				Description<textarea name="description" rows="10" cols="30"></textarea><br>
+				Address<input type="text" name="address"><br>
+				Email<input type="text" name="email"><br>
+				Password<input type="password" name="password"><br>
+				Packer code<input type="text" name="code"><br>
+				<input type="button" value="Register" onclick="registerManufacturer()">
+			</fieldset>
+		</form>
+		<div id="info">
+		<ul>
+		<li>Password should be minimum of 8 characters</li>
+		<li>No empty fields</li>
+		</ul>
+		</div>
+	</body>
+</html>
