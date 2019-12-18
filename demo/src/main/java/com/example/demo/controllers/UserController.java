@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import com.example.demo.Ch;
 import com.example.demo.entity.Client;
 import com.example.demo.entity.Manufacturer;
 import com.example.demo.entity.Package;
@@ -147,6 +148,40 @@ public class UserController {
 		User.isClient = true;
 		User.id = 0;
 		return "index";
+	}
+	
+	@PostMapping("/checkemail")
+	@ResponseBody
+	public boolean checkEmail(@RequestBody Map<String, String> body) {
+		String email = body.get("email").trim().replaceAll("\\s{2,}", "");
+		
+		if (!(Ch.checkEmail(email))) {
+			return false; 
+		}
+		
+		if (body.get("role") == "c") {
+			Client c = clientRepository.findByEmail(email);
+			if (c == null) {
+				return false;
+			}
+		} else if (body.get("role") == "m") {
+			Manufacturer m = manufacturerRepository.findByEmail(email);
+			if (m == null) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
+	
+	@GetMapping("/edit")
+	public String editpage(Model model) {
+		model.addAttribute("isclient", User.isClient);
+		if (!User.isClient) {
+			model.addAttribute("code", packerRepository.findById(User.id).get().getCode());
+		}
+		
+		return "edit"; 
 	}
 	
 }

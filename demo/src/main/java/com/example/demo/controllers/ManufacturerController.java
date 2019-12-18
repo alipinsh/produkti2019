@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 
 
 @Controller
@@ -126,10 +127,22 @@ public class ManufacturerController {
 				packerRepository.findByCode(body.get("code")) == null) {
 			String email = body.get("email").trim().replaceAll("\\s{2,}", "");
 			String password = body.get("password").trim().replaceAll("\\s{2,}", "");
+			String password2 = body.get("password2").trim().replaceAll("\\s{2,}", "");
 			String name = body.get("name").trim().replaceAll("\\s{2,}", "");
 			String description = body.get("description").trim().replaceAll("\\s{2,}", "");
 			String address = body.get("address").trim().replaceAll("\\s{2,}", "");
-			String code = body.get("code").trim().replaceAll("\\s{2,}", "");
+			String code = "";
+			
+			if (!(password.equals(password2))) {
+				return false;
+			}
+			
+			Random rand = new Random();
+			do {
+				for (int i = 0; i < 3; ++i) {
+					code += Integer.toString(rand.nextInt(10)); 
+				}
+			} while (!(packerRepository.findByCode(code) == null));
 			
 			if (Ch.checkEmail(email) && Ch.checkPassword(password) && Ch.checkString(name) && Ch.checkString(description) && Ch.checkString(address) && Ch.checkString(code)) {
 				Manufacturer manufacturer = manufacturerRepository.save(new Manufacturer(email, password, name, description, address));
@@ -139,8 +152,6 @@ public class ManufacturerController {
 		}
 		
 		return false;
-		
-		
 	}
 	
 	@PutMapping("/manufacturer")
@@ -206,5 +217,19 @@ public class ManufacturerController {
 		if (User.isClient == false && User.id == Integer.parseInt(id)) {
 			manufacturerRepository.deleteById(Integer.parseInt(id)); 
 		}
+	}
+	
+	@PostMapping("/code")
+	@ResponseBody
+	public String regenerate() {
+		String code = "";
+		Random rand = new Random();
+		do {
+			for (int i = 0; i < 3; ++i) {
+				code += Integer.toString(rand.nextInt(10)); 
+			}
+		} while (!(packerRepository.findByCode(code) == null));
+		
+		return code;
 	}
 }

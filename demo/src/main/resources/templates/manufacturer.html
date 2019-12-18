@@ -22,9 +22,10 @@
 		<h1 th:attr="data-manid=${id}" th:text="${name}"></h1>
 		<ul>
 		<li th:text="${description}"></li>
-		<li th:text="${address}"></li>
-		<li th:text="${email}"></li>
-		<li th:if="${ismine}" th:text="${code}"></li>
+		<li>Address: <span th:text="${address}"></span></li>
+		<li>Email: <span th:text="${email}"></span></li>
+		<li th:if="${ismine}">Packer code: <span th:text="${code}"></span></li>
+		<li><a href="/edit"></a></li>
 		</ul>
 	</div>
 

@@ -320,3 +320,122 @@ function registerManufacturer() {
 	xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 	xhttp.send(JSON.stringify(manufacturer));
 }
+
+function checkEmail(role) {
+	let xhttp = new XMLHttpRequest();
+	let container = null;
+	if (role == "c") {
+		container = document.querySelector("#clientForm");
+	} else if (role == "m") {
+		container = document.querySelector("#manufacturerForm");
+	}
+	
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			let value = this.responseText;
+			console.log(value);
+			if (value == "true") {
+				container.querySelector("span.emailError").innerHTML = "Email is already in use!";
+			} else {
+				container.querySelector("span.emailError").innerHTML = "";
+			}
+		}
+	}
+	
+	let email = container.querySelector("input[name='email']").value;
+	
+	xhttp.open("POST", "/checkemail" , true);
+	xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+	xhttp.send(JSON.stringify({email, role}));
+}
+
+function editClient() {
+	let xhttp = new XMLHttpRequest();
+	let form = document.forms["clientForm"];
+	let client = {};
+	
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			let value = this.responseText;
+			if (value) {
+				window.alert("Info is updated!")
+			} else {
+				window.alert("Not updated due to an input error");
+			}
+		}
+	}
+	
+	if (form["email"].value != "") {
+		client["email"] = form["email"].value;
+	}
+	if (form["password"].value != "") {
+		client["password"] = form["password"].value;
+		client["password2"] = form["password2"].value;
+	}
+	if (form["name"].value != "") {
+		client["name"] = form["name"].value;
+	}
+	if (form["surname"].value != "") {
+		client["surname"] = form["surname"].value;
+	}
+	if (form["address"] != "") {
+		client["address"] = form["address"].value;
+	}
+	
+	xhttp.open("PUT", "/client" , true);
+	xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+	xhttp.send(JSON.stringify(client));
+}
+
+function editManufacturer() {
+	let xhttp = new XMLHttpRequest();
+	let form = document.forms["clientForm"];
+	let manufacturer = {};
+	
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			let value = this.responseText;
+			if (value) {
+				window.alert("Info is updated!")
+			} else {
+				window.alert("Not updated due to an input error");
+			}
+		}
+	}
+	
+	if (form["email"].value != "") {
+		manufacturer["email"] = form["email"].value;
+	}
+	if (form["password"].value != "") {
+		manufacturer["password"] = form["password"].value;
+		manufacturer["password2"] = form["password2"].value;
+	}
+	if (form["name"].value != "") {
+		manufacturer["name"] = form["name"].value;
+	}
+	if (form["description"].value != "") {
+		manufacturer["description"] = form["description"].value;
+	}
+	if (form["address"] != "") {
+		manufacturer["address"] = form["address"].value;
+	}
+	
+	xhttp.open("PUT", "/manufacturer" , true);
+	xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+	xhttp.send(JSON.stringify(manufacturer));
+}
+
+function regenerateCode() {
+	let xhttp = new XMLHttpRequest();
+	
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			let value = this.responseText;
+			document.getElementById("code").innerHTML = value;
+		}
+	}
+	
+	xhttp.open("POST", "/code", true);
+	xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+	xhttp.send();
+}

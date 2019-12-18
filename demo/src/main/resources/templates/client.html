@@ -20,8 +20,9 @@
 	
 		<h1 th:attr="data-clientid=${id}" th:text="${name + ' ' + surname} "></h1>
 		<ul>
-		<li th:text="${address}"></li>
-		<li th:text="${email}"></li>
+		<li>Address: <span th:text="${address}"></span></li>
+		<li>Email: <span th:text="${email}"></span></li>
+		<li><a href="/edit">Edit account info</a></li>
 		</ul>
 		
 		<div id="packageList" >
