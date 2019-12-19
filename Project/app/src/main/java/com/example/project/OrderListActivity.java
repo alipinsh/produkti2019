@@ -1,6 +1,10 @@
 package com.example.project;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,6 +29,9 @@ import android.widget.ListView;
 
 import java.util.HashMap;
 import java.util.List;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 public class OrderListActivity extends ListActivity {
 
@@ -100,6 +107,7 @@ public class OrderListActivity extends ListActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Toast.makeText(OrderListActivity.this, "Please wait...", Toast.LENGTH_SHORT).show();
+            internetCheck();
         }
 
         @Override
@@ -149,6 +157,18 @@ public class OrderListActivity extends ListActivity {
             if (fetching) {
                 resultAdapter = new ArrayAdapter<String>(OrderListActivity.this, android.R.layout.simple_list_item_1, displayList);
                 setListAdapter(resultAdapter);
+            }
+        }
+        public void internetCheck(){
+            ConnectivityManager connectivityManager
+                    = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+            if (networkInfo != null && networkInfo.isConnected()) {
+             //   textView.setText("");
+            }
+            else{
+                Toast.makeText(OrderListActivity.this, "No internet connection!", Toast.LENGTH_SHORT).show();
+               // textView.setText("Please turn on the Internet!");
             }
         }
     }
