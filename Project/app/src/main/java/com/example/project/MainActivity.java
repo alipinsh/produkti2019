@@ -17,20 +17,27 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.Statement;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
 public class MainActivity extends AppCompatActivity {
     private String t = "[MAIN]";
     private boolean isRightCode = false;
-
     private Button button;
     private EditText editText;
-
+    //private Context context;
+    private TextView textView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         button = findViewById(R.id.button);
         editText = findViewById(R.id.editText);
+        textView = findViewById(R.id.txtData);
+
 
         button.setOnClickListener(new View.OnClickListener() {
 
@@ -40,14 +47,15 @@ public class MainActivity extends AppCompatActivity {
                 connectMySql.execute("");
             }
         });
-
     }
+
     protected class ConnectMySql extends AsyncTask<String, Void, String> {
         String res = "";
-
         @Override
+
         protected void onPreExecute() {
             super.onPreExecute();
+            internetCheck();
             Toast.makeText(MainActivity.this, "Please wait...", Toast.LENGTH_SHORT).show();
 
         }
@@ -77,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
                 Log.e(t, e.toString());
             }
+
             return res;
 
         }
@@ -96,5 +105,17 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = new Intent(this, MenuActivity.class);
         startActivity(intent);
+    }
+    public void internetCheck(){
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            textView.setText("");
+        }
+        else{
+            Toast.makeText(MainActivity.this, "No internet connection!", Toast.LENGTH_SHORT).show();
+            textView.setText("Please turn on the Internet!");
+        }
     }
 }

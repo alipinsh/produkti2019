@@ -19,15 +19,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_marginLeft="150dp"
+        android:layout_marginLeft="130dp"
         android:layout_marginRight="20dp"
         android:textSize="15dp"
-        android:text="Show scanned product" />
+        android:text="Show only not scanned product" />
 
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
-        android:layout_height="406dp"
+        android:layout_height="506dp"
         android:layout_marginTop="30dp"
         android:divider="#ECECEC"
         android:dividerHeight="1sp" />
@@ -36,8 +36,8 @@
         android:id="@+id/scanbutton"
         android:layout_width="174dp"
         android:layout_height="52dp"
-        android:layout_marginLeft="90dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal|bottom"
         android:text="Scan"
         android:textSize="17dp"
         android:visibility="visible" />

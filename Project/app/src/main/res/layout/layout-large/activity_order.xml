@@ -19,10 +19,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_marginLeft="140dp"
+        android:layout_marginLeft="110dp"
         android:layout_marginRight="60dp"
-        android:textSize="20"
-        android:text="Show scanned product" />
+        android:textSize="18"
+        android:text="Show only not scanned product" />
 
     <ListView
         android:id="@+id/listView"
@@ -36,10 +36,10 @@
     <Button
         android:id="@+id/scanbutton"
         android:layout_width="184dp"
-        android:textSize="27"
+        android:textSize="24"
         android:layout_height="52dp"
-        android:layout_marginLeft="145dp"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="30dp"
+        android:layout_gravity="center_horizontal|bottom"
         android:text="Scan"
         android:visibility="visible" />
 

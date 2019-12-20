@@ -5,7 +5,7 @@
     android:orientation="vertical">
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/showProducts"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal|bottom"

@@ -22,8 +22,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SurfaceView;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
+import android.widget.Button;
 
 import java.util.HashMap;
 import java.util.TreeSet;
@@ -41,6 +43,10 @@ public class BarcodeActivity extends Activity implements CvCameraViewListener2 {
     private String foundString;
     private Boolean value;
     private TreeSet<String> stringSet;
+
+    private Button showProductsButton;
+    private Runnable showMessage1;
+    private Runnable showMessage2;
 
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
@@ -79,9 +85,31 @@ public class BarcodeActivity extends Activity implements CvCameraViewListener2 {
 
         mOpenCvCameraView.setCvCameraViewListener(this);
 
+        showMessage1 = new Runnable() {
+            public void run() {
+                Toast.makeText(BarcodeActivity.this, "Found product from list!", Toast.LENGTH_SHORT).show();
+            }
+        };
+
+        showMessage2 = new Runnable() {
+            public void run() {
+                Toast.makeText(BarcodeActivity.this, "Product already is scanned", Toast.LENGTH_SHORT).show();
+            }
+        };
+
         prodcodes = (HashMap<String, Boolean>) getIntent().getSerializableExtra("PRODCODES");
         Log.i(t, prodcodes.toString());
         stringSet = new TreeSet<String>();
+
+
+        showProductsButton = (Button) findViewById(R.id.showProducts);
+        showProductsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
     }
 
     @Override
@@ -122,12 +150,21 @@ public class BarcodeActivity extends Activity implements CvCameraViewListener2 {
 
     public Mat onCameraFrame(CvCameraViewFrame inputFrame) {
         mFrame = inputFrame.rgba();
-        Core.rotate(mFrame, mFrame, Core.ROTATE_90_CLOCKWISE);
+       // Core.rotate(mFrame, mFrame, Core.ROTATE_90_CLOCKWISE);
         foundString = mReader.read(mFrame);
         Log.i(t, foundString);
 
         if (foundString != "") {
-            stringSet.add(foundString);
+            //stringSet.add(foundString);
+            value = prodcodes.get(foundString);
+            if (value != null) {
+                if (value) {
+                    runOnUiThread(showMessage2);
+                } else {
+                    prodcodes.put(foundString, true);
+                    runOnUiThread(showMessage1);
+                }
+            }
         }
 
         return mFrame;
@@ -136,12 +173,13 @@ public class BarcodeActivity extends Activity implements CvCameraViewListener2 {
     @Override
     public void onBackPressed() {
         Log.i(t, "Pressed back");
-
+        /*
         for (String s : stringSet) {
             if (prodcodes.containsKey(s)) {
                 prodcodes.put(s, true);
             }
         }
+        */
 
         Intent resultIntent = new Intent();
         resultIntent.putExtra("CAMERA_RESULT", prodcodes);
