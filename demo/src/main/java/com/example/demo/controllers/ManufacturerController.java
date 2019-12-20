@@ -4,8 +4,13 @@ import com.example.demo.repositories.ProductRepository;
 import com.example.demo.Ch;
 import com.example.demo.entity.Client;
 import com.example.demo.entity.Manufacturer;
+import com.example.demo.entity.Package;
+import com.example.demo.entity.PackageProducts;
 import com.example.demo.entity.Product;
+import com.example.demo.repositories.ClientRepository;
 import com.example.demo.repositories.ManufacturerRepository;
+import com.example.demo.repositories.PackageProductsRepository;
+import com.example.demo.repositories.PackageRepository;
 import com.example.demo.repositories.PackerRepository;
 import com.example.demo.entity.Packer;
 
@@ -15,6 +20,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +43,15 @@ public class ManufacturerController {
 	
 	@Autowired
 	PackerRepository packerRepository;
+	
+	@Autowired
+	PackageRepository packageRepository;
+	
+	@Autowired
+	PackageProductsRepository packageProductsRepository;
+	
+	@Autowired
+	ClientRepository clientRepository;
 	
 	@GetMapping("/manufacturer")
 	public String showCurrentManufacturer(Model model) {
@@ -64,6 +79,41 @@ public class ManufacturerController {
 			model.addAttribute("email", manufacturer.getEmail());
 			model.addAttribute("products", productRepository.findByManufacturer(manufacturer.getId()));
 			model.addAttribute("code", packerRepository.findById(User.id).get().getCode());
+			
+				List<Package> packages = packageRepository.findByManufacturer(User.id);
+				model.addAttribute("packages", packages);
+				
+				Map<Integer, Client> packageClients = new HashMap<Integer, Client>();
+				for (int i = 0; i < packages.size(); ++i) {
+					packageClients.put(
+						packages.get(i).getId(),
+						clientRepository.findById(packages.get(i).getClient()).get()
+					);
+				}
+				model.addAttribute("packageClients", packageClients);
+				
+				Map<Integer, List<PackageProducts>> packageProducts = new HashMap<Integer, List<PackageProducts>>();
+				for (int i = 0; i < packages.size(); ++i) {
+					packageProducts.put(
+						packages.get(i).getId(),
+						packageProductsRepository.findByPakage(packages.get(i).getId())
+					);
+				}
+				model.addAttribute("packageProducts", packageProducts);
+				
+				Map<Integer, Product> productsp = new HashMap<Integer, Product>();
+				List<Integer> productIds = new ArrayList<Integer>();
+				for (Map.Entry<Integer, List<PackageProducts>> entry : packageProducts.entrySet()) {
+					for (int i = 0; i < entry.getValue().size(); ++i) {
+						int productId = entry.getValue().get(i).getProduct();
+						if (!(productIds.contains(productId))) {
+							productIds.add(productId);
+							productsp.put(productId, productRepository.findById(productId).get());
+						}
+					}
+				}
+				
+				model.addAttribute("productsp", productsp);
 			
 			return "manufacturer";
 		}
@@ -115,6 +165,43 @@ public class ManufacturerController {
 		model.addAttribute("address", manufacturer.getAddress());
 		model.addAttribute("email", manufacturer.getEmail());
 		model.addAttribute("products", productRepository.findByManufacturer(manufacturer.getId()));
+		
+		if (User.isClient == false && User.id == Integer.parseInt(id)) {
+			List<Package> packages = packageRepository.findByManufacturer(User.id);
+			model.addAttribute("packages", packages);
+			
+			Map<Integer, Client> packageClients = new HashMap<Integer, Client>();
+			for (int i = 0; i < packages.size(); ++i) {
+				packageClients.put(
+					packages.get(i).getId(),
+					clientRepository.findById(packages.get(i).getClient()).get()
+				);
+			}
+			model.addAttribute("packageClients", packageClients);
+			
+			Map<Integer, List<PackageProducts>> packageProducts = new HashMap<Integer, List<PackageProducts>>();
+			for (int i = 0; i < packages.size(); ++i) {
+				packageProducts.put(
+					packages.get(i).getId(),
+					packageProductsRepository.findByPakage(packages.get(i).getId())
+				);
+			}
+			model.addAttribute("packageProducts", packageProducts);
+			
+			Map<Integer, Product> productsp = new HashMap<Integer, Product>();
+			List<Integer> productIds = new ArrayList<Integer>();
+			for (Map.Entry<Integer, List<PackageProducts>> entry : packageProducts.entrySet()) {
+				for (int i = 0; i < entry.getValue().size(); ++i) {
+					int productId = entry.getValue().get(i).getProduct();
+					if (!(productIds.contains(productId))) {
+						productIds.add(productId);
+						productsp.put(productId, productRepository.findById(productId).get());
+					}
+				}
+			}
+			
+			model.addAttribute("productsp", productsp);
+		}
 		
 		return "manufacturer";
 	}
@@ -222,14 +309,22 @@ public class ManufacturerController {
 	@PostMapping("/code")
 	@ResponseBody
 	public String regenerate() {
-		String code = "";
-		Random rand = new Random();
-		do {
-			for (int i = 0; i < 3; ++i) {
-				code += Integer.toString(rand.nextInt(10)); 
-			}
-		} while (!(packerRepository.findByCode(code) == null));
-		
-		return code;
+		if (User.isClient == false) {
+			String code = "";
+			Random rand = new Random();
+			do {
+				for (int i = 0; i < 3; ++i) {
+					code += Integer.toString(rand.nextInt(10)); 
+				}
+			} while (!(packerRepository.findByCode(code) == null));
+			
+			Packer packer = packerRepository.findById(User.id).get();
+			packer.setCode(code);
+			packerRepository.save(packer);
+			
+			return code;
+		}
+	return "";
 	}
+		
 }

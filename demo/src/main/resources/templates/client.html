@@ -8,23 +8,23 @@
 <body>
 	<div id="header">
 		<h1>ProductsRVT</h1>
-		<ul>
-		<li th:if="${isclient}"><a href="/client">My page (Client)</a></li>
-		<li th:unless="${isclient}"><a href="/manufacturer">My page (Manufacturer)</a></li>
-		<li><a href="/products">Products</a></li>
-		<li><a href="/manufacturers">Manufacturers</a></li>
-		<li><a href="/logout">Logout</a></li>
-		</ul>
+		<a th:if="${isclient}" href="/client">My page (Client)</a>
+		<a th:unless="${isclient}" href="/manufacturer">My page (Manufacturer)</a>
+		<a href="/products">Products</a>
+		<a href="/manufacturers">Manufacturers</a>
+		<a href="/logout">Logout</a>
 		<hr />
 	</div>
 	
-		<h1 th:attr="data-clientid=${id}" th:text="${name + ' ' + surname} "></h1>
+	<div id="clientInfo">
+	<h1 th:attr="data-clientid=${id}" th:text="${name + ' ' + surname} "></h1>
 		<ul>
 		<li>Address: <span th:text="${address}"></span></li>
 		<li>Email: <span th:text="${email}"></span></li>
 		<li><a href="/edit">Edit account info</a></li>
 		</ul>
-		
+	</div>
+	
 		<div id="packageList" >
 			<div class="packageView" th:each="package: ${packages}" th:attr="data-packageid=${package.id}">
 				<div class="packageSent" th:if="${package.sent}">Confirmed</div>

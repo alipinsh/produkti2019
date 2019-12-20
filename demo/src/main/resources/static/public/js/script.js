@@ -314,7 +314,6 @@ function registerManufacturer() {
 	manufacturer["name"] = form["name"].value;
 	manufacturer["description"] = form["description"].value;
 	manufacturer["address"] = form["address"].value;
-	manufacturer["code"] = form["code"].value;
 	
 	xhttp.open("POST", "/manufacturer" , true);
 	xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
@@ -329,6 +328,8 @@ function checkEmail(role) {
 	} else if (role == "m") {
 		container = document.querySelector("#manufacturerForm");
 	}
+	
+	container.querySelector("span.emailError").innerHTML = "";
 	
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
@@ -382,6 +383,7 @@ function editClient() {
 		client["address"] = form["address"].value;
 	}
 	
+	console.log(client);
 	xhttp.open("PUT", "/client" , true);
 	xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 	xhttp.send(JSON.stringify(client));
@@ -389,7 +391,7 @@ function editClient() {
 
 function editManufacturer() {
 	let xhttp = new XMLHttpRequest();
-	let form = document.forms["clientForm"];
+	let form = document.forms["manufacturerForm"];
 	let manufacturer = {};
 	
 	xhttp.onreadystatechange = function() {

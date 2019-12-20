@@ -8,13 +8,11 @@
 <body>
 	<div id="header">
 		<h1>ProductsRVT</h1>
-		<ul>
-		<li th:if="${isclient}"><a href="/client">My page (Client)</a></li>
-		<li th:unless="${isclient}"><a href="/manufacturer">My page (Manufacturer)</a></li>
-		<li><a href="/products">Products</a></li>
-		<li><a href="/manufacturers">Manufacturers</a></li>
-		<li><a href="/logout">Logout</a></li>
-		</ul>
+		<a th:if="${isclient}" href="/client">My page (Client)</a>
+		<a th:unless="${isclient}" href="/manufacturer">My page (Manufacturer)</a>
+		<a href="/products">Products</a>
+		<a href="/manufacturers">Manufacturers</a>
+		<a href="/logout">Logout</a>
 		<hr />
 	</div>
 

@@ -8,24 +8,22 @@
 <body>
 	<div id="header">
 		<h1>ProductsRVT</h1>
-		<ul>
-		<li th:if="${isclient}"><a href="/client">My page (Client)</a></li>
-		<li th:unless="${isclient}"><a href="/manufacturer">My page (Manufacturer)</a></li>
-		<li><a href="/products">Products</a></li>
-		<li><a href="/manufacturers">Manufacturers</a></li>
-		<li><a href="/logout">Logout</a></li>
-		</ul>
+		<a th:if="${isclient}" href="/client">My page (Client)</a>
+		<a th:unless="${isclient}" href="/manufacturer">My page (Manufacturer)</a>
+		<a href="/products">Products</a>
+		<a href="/manufacturers">Manufacturers</a>
+		<a href="/logout">Logout</a>
 		<hr />
 	</div>
 	
-	<div id="info">
+	<div id="manufacturerInfo">
 		<h1 th:attr="data-manid=${id}" th:text="${name}"></h1>
 		<ul>
 		<li th:text="${description}"></li>
 		<li>Address: <span th:text="${address}"></span></li>
 		<li>Email: <span th:text="${email}"></span></li>
 		<li th:if="${ismine}">Packer code: <span th:text="${code}"></span></li>
-		<li><a href="/edit"></a></li>
+		<li th:if="${ismine}"><a href="/edit">Edit account info</a></li>
 		</ul>
 	</div>
 
@@ -75,6 +73,33 @@
 		<li>No empty fields</li>
 		</ul>
 	</div>
+	
+	<div id="packageList" >
+			<div class="packageView" th:each="package: ${packages}" th:attr="data-packageid=${package.id}">
+				<div class="packageInfo">
+					<div><span th:text="${packageClients.get(package.id).name}"></span> <span th:text="${packageClients.get(package.id).surname}"></span></div>
+					<div th:text="${packageClients.get(package.id).address}"></div>
+					<div th:text="${packageClients.get(package.id).email}"></div>
+				</div>
+				<div class="packageStatus">
+					<div th:if="${package.status}">Ready</div>
+					<div th:unless="${package.status}">Not ready</div>
+				</div>
+				<table class="packageTable">
+					<tr th:each="packageProduct : ${packageProducts.get(package.id)}" th:attr="data-productid=${packageProduct.product}">
+						<td><a th:href="@{/product/{pid}(pid=${packageProduct.product})}" th:text="${packageProduct.product}"></a></td>
+						<td th:text="${productsp.get(packageProduct.product).name}"></td>
+						<td th:text="${#numbers.formatDecimal(productsp.get(packageProduct.product).price, 1, 'COMMA', 2, 'POINT')}"></td>
+						<td th:text="${packageProduct.quantity}"></td>
+						<td>
+							<span th:if="${packageProduct.scanned}">Scanned</span>
+							<span th:unless="${packageProduct.scanned}">Not scanned</span>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		
 	</div>
 </body>
 </html>

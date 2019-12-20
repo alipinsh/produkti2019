@@ -7,3 +7,6 @@ table, th, td {
 .packageView {
 	border: 1px solid black;
 }
+.header h1 a {
+	text-align: center;
+}

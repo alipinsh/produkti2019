@@ -11,24 +11,36 @@
 		<form id="clientForm" name="clientForm" >
 			<fieldset>
 			<legend>Client form</legend>
-				Name<input type="text" name="name"><br>
-				Surname<input type="text" name="surname"><br>
-				Address<input type="text" name="address"><br>
-				Email<input type="text" name="email" onchange="checkEmail('c')"><span class="emailError"></span><br>
-				Password<input type="password" name="password"><br>
-				Password one more time<input type="password" name="password2"><span class="passError"></span><br>
+				<label for="name">New name</label>
+				<input type="text" name="name"><br>
+				<label for="surname">New surname</label>
+				<input type="text" name="surname"><br>
+				<label for="address">New address</label>
+				<input type="text" name="address"><br>
+				<label for="email">New email</label>
+				<input type="text" name="email" onchange="checkEmail('c')"><span class="emailError"></span><br>
+				<label for="password">New password</label>
+				<input type="password" name="password"><br>
+				<label for="password2">New password one more time</label>
+				<input type="password" name="password2"><div class="passError"></div><br>
 				<input type="button" value="Register" onclick="registerClient()">
 			</fieldset>
 		</form>
 		<form id="manufacturerForm" name="manufacturerForm">
 			<fieldset>
 			<legend>Manufacturer form</legend>
-				Name<input type="text" name="name"><br>
-				Description<textarea name="description" rows="10" cols="30"></textarea><br>
-				Address<input type="text" name="address"><br>
-				Email<input type="text" name="email" onchange="checkEmail('m')"><span class="emailError"></span><br>
-				Password<input type="password" name="password"><br>
-				Password one more time<input type="password" name="password2"><span class="passError"></span><br>
+				<label for="name">New name</label>
+				<input type="text" name="name"><br>
+				<label for="surname">New description</label>
+				<textarea name="description" rows="10" cols="30"></textarea><br>
+				<label for="address">New address</label>
+				<input type="text" name="address"><br>
+				<label for="email">New email</label>
+				<input type="text" name="email" onchange="checkEmail('m')"><span class="emailError"></span><br>
+				<label for="password">New password</label>
+				<input type="password" name="password"><br>
+				<label for="password2">New password one more time</label>
+				<input type="password" name="password2"><div class="passError"></div><br>
 				<input type="button" value="Register" onclick="registerManufacturer()">
 			</fieldset>
 		</form>

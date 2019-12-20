@@ -162,16 +162,16 @@ public class UserController {
 		if (body.get("role") == "c") {
 			Client c = clientRepository.findByEmail(email);
 			if (c == null) {
-				return false;
+				return true;
 			}
 		} else if (body.get("role") == "m") {
 			Manufacturer m = manufacturerRepository.findByEmail(email);
 			if (m == null) {
-				return false;
+				return true;
 			}
 		}
 		
-		return true;
+		return false;
 	}
 	
 	@GetMapping("/edit")

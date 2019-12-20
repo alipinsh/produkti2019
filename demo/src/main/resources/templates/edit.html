@@ -8,41 +8,51 @@
 <body>
 	<div id="header">
 		<h1>ProductsRVT</h1>
-		<ul>
-		<li th:if="${isclient}"><a href="/client">My page (Client)</a></li>
-		<li th:unless="${isclient}"><a href="/manufacturer">My page (Manufacturer)</a></li>
-		<li><a href="/products">Products</a></li>
-		<li><a href="/manufacturers">Manufacturers</a></li>
-		<li><a href="/logout">Logout</a></li>
-		</ul>
+		<a th:if="${isclient}" href="/client">My page (Client)</a>
+		<a th:unless="${isclient}" href="/manufacturer">My page (Manufacturer)</a>
+		<a href="/products">Products</a>
+		<a href="/manufacturers">Manufacturers</a>
+		<a href="/logout">Logout</a>
 		<hr />
 	</div>
 	
-	<div th:if="isclient">
+	<div th:if="${isclient}">
 	<form id="clientForm" name="clientForm">
 			<fieldset>
 			<legend>Client form</legend>
-				New name<input type="text" name="name"><br>
-				New surname<input type="text" name="surname"><br>
-				New address<input type="text" name="address"><br>
-				New email<input type="text" name="email" onchange="checkEmail('c')"><span class="emailError"></span><br>
-				New password<input type="password" name="password"><br>
-				New password one more time<input type="password" name="password2"><div class="passError"></div><br>
-				<input type="button" value="Update" onclick="registerClient()">
+				<label for="name">New name</label>
+				<input type="text" name="name"><br>
+				<label for="surname">New surname</label>
+				<input type="text" name="surname"><br>
+				<label for="address">New address</label>
+				<input type="text" name="address"><br>
+				<label for="email">New email</label>
+				<input type="text" name="email" onchange="checkEmail('c')"><span class="emailError"></span><br>
+				<label for="password">New password</label>
+				<input type="password" name="password"><br>
+				<label for="password2">New password one more time</label>
+				<input type="password" name="password2"><div class="passError"></div><br>
+				<input type="button" value="Update" onclick="editClient()">
 			</fieldset>
 	</form>
 	</div>
-	<div th:unless="isclient">
+	<div th:unless="${isclient}">
 	
 		<form id="manufacturerForm" name="manufacturerForm">
 			<fieldset>
 			<legend>Manufacturer form</legend>
-				New name<input type="text" name="name"><br>
-				New description<textarea name="description" rows="10" cols="30"></textarea><br>
-				New address<input type="text" name="address"><br>
-				New email<input type="text" name="email" onchange="checkEmail('m')"><span class="emailError"></span><br>
-				New password<input type="password" name="password"><br>
-				New password one more time<input type="password" name="password2"><div class="passError"></div><br>
+				<label for="name">New name</label>
+				<input type="text" name="name"><br>
+				<label for="surname">New description</label>
+				<textarea name="description" rows="10" cols="30"></textarea><br>
+				<label for="address">New address</label>
+				<input type="text" name="address"><br>
+				<label for="email">New email</label>
+				<input type="text" name="email" onchange="checkEmail('m')"><span class="emailError"></span><br>
+				<label for="password">New password</label>
+				<input type="password" name="password"><br>
+				<label for="password2">New password one more time</label>
+				<input type="password" name="password2"><div class="passError"></div><br>
 				<input type="button" value="Update" onclick="editManufacturer()">
 			</fieldset>
 		</form>
@@ -57,7 +67,7 @@
 		<li>Password should contain only alphanumeric characters</li>
 		<li>No empty fields</li>
 		</ul>
-		</div>
+	</div>
 	
 </body>
 </html>
